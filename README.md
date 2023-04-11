@@ -3,4 +3,4 @@ Program that recommends different video input controls depending upon the specif
 
 ## Roadmap
 
-[x] Initialize main file in python
+- [x] Initialize main file in python
