@@ -30,6 +30,10 @@ for item in database:
 
 platforms.sort()
 
+genres = []
+
+games = []
+
 # Create object
 root = Tk()
 root.title("Video Game Input Recommender")
@@ -38,8 +42,11 @@ root.title("Video Game Input Recommender")
 root.geometry( "800x450" )
 root.configure(background='gray')
 
+root.grid_rowconfigure(0, weight=1)
+root.grid_columnconfigure(0, weight=1)
+
 titleLabel = Label(text = "Video Game Input Recommender", bg="gray", fg='white', font=("Arial", 25))
-titleLabel.pack(anchor=N, pady=10)
+titleLabel.grid(row=0, column=0, sticky="nsew", pady=10)
 
 c = 0
 platBox = Listbox(root, selectmode=SINGLE, relief=FLAT)
@@ -59,7 +66,35 @@ for plat in platforms:
         plat = "Computer"
     platBox.insert(c, plat)
 
-platBox.pack(anchor=NW, padx=10, pady=10)
+platBox.grid(row=1, column=0, padx=10, pady=10)
+
+c = 0
+genreBox = Listbox(root, selectmode=SINGLE, relief=FLAT)
+for genre in genres:
+    c += 1
+    if genre == "ns":
+        genre = "Nintendo Switch"
+    if genre == "p4":
+        genre = "Playstation 4"
+    if genre == "p5":
+        genre = "Playstation 5"
+    if genre == "x1":
+        genre = "Xbox One"
+    if genre == "xx":
+        genre = "Xbox Series X"
+    if genre == "pc":
+        genre = "Computer"
+    genreBox.insert(c, genre)
+
+genreBox.grid(row=1, column=1, padx=10, pady=10)
+
+c = 0
+gameBox = Listbox(root, selectmode=SINGLE, relief=FLAT)
+for game in games:
+    c += 1
+    gameBox.insert(c, game)
+
+gameBox.grid(row=1, column=2, padx=10, pady=10)
 
 
 # Execute tkinter
