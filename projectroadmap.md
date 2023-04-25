@@ -6,5 +6,7 @@
 - [ ] Build decision making tree
 - [x] Get tkinter working
 - [x] Get dropdowns working
+- [ ] Sorted selection filter
+- [ ] GUI visual formatting
 - [ ] Import Sprites
 - [ ] Export windows executable (stand alone program)
