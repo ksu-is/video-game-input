@@ -4,7 +4,7 @@
 - [x] Build prelim game database
     - [ ] Build final game database
 - [ ] Build decision making tree
-- [ ] Get tkinter working
+- [x] Get tkinter working
 - [ ] Get dropdowns working
 - [ ] Import Sprites
 - [ ] Export windows executable (stand alone program)
