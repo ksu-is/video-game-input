@@ -5,6 +5,6 @@
     - [ ] Build final game database
 - [ ] Build decision making tree
 - [x] Get tkinter working
-- [ ] Get dropdowns working
+- [x] Get dropdowns working
 - [ ] Import Sprites
 - [ ] Export windows executable (stand alone program)
