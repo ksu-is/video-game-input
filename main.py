@@ -105,16 +105,26 @@ recLabel = Label(text = "Select a platform, genre, and game", bg="gray", fg='whi
 recLabel.grid(row=3, column=0, pady=10)
 
 ##########################################################################################
-def callback(event):
+# Logic Processor
+platSel = None
+genreSel = None
+gameSel = None
+def recommendation():
+    if not platSel and not genreSel and not gameSel:
+        pass
+    else:
+        recLabel.configure(text="Error: Missing Selection")
+
+##########################################################################################
+# Events
+def platCallback(event):
     selection = event.widget.curselection()
     if selection:
         index = selection[0]
         data = event.widget.get(index)
         recLabel.configure(text=data)
-    else:
-        recLabel.configure(text="")
 
-platBox.bind("<<ListboxSelect>>", callback)
+platBox.bind("<<ListboxSelect>>", platCallback)
 
-# Execute tkinter
+##########################################################################################
 root.mainloop()
