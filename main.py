@@ -34,19 +34,26 @@ genres = []
 
 games = []
 
-# Create object
+##########################################################################################
+# GUI generation
 root = Tk()
 root.title("Video Game Input Recommender")
-
-# Adjust size
 root.geometry( "800x450" )
 root.configure(background='gray')
-
 root.grid_rowconfigure(0, weight=1)
 root.grid_columnconfigure(0, weight=1)
 
 titleLabel = Label(text = "Video Game Input Recommender", bg="gray", fg='white', font=("Arial", 25))
 titleLabel.grid(row=0, column=0, sticky="nsew", pady=10)
+
+platLabel = Label(text = "Platform", bg="gray", fg='white', font=("Arial", 15))
+platLabel.grid(row=1, column=0, pady=10)
+
+genreLabel = Label(text = "Genre", bg="gray", fg='white', font=("Arial", 15))
+genreLabel.grid(row=1, column=1, pady=10)
+
+gameLabel = Label(text = "Game", bg="gray", fg='white', font=("Arial", 15))
+gameLabel.grid(row=1, column=2, pady=10)
 
 c = 0
 platBox = Listbox(root, selectmode=SINGLE, relief=FLAT)
@@ -66,27 +73,25 @@ for plat in platforms:
         plat = "Computer"
     platBox.insert(c, plat)
 
-platBox.grid(row=1, column=0, padx=10, pady=10)
+platBox.grid(row=2, column=0, padx=10, pady=10)
 
 c = 0
 genreBox = Listbox(root, selectmode=SINGLE, relief=FLAT)
 for genre in genres:
     c += 1
-    if genre == "ns":
-        genre = "Nintendo Switch"
-    if genre == "p4":
-        genre = "Playstation 4"
-    if genre == "p5":
-        genre = "Playstation 5"
-    if genre == "x1":
-        genre = "Xbox One"
-    if genre == "xx":
-        genre = "Xbox Series X"
-    if genre == "pc":
-        genre = "Computer"
+    if genre == "fps":
+        genre = "First Person Shooter"
+    if genre == "racing":
+        genre = "Racing"
+    if genre == "sports":
+        genre = "Sports"
+    if genre == "rpg":
+        genre = "Role Playing Game"
+    if genre == "mmo":
+        genre = "Massively Multiplayer Online"
     genreBox.insert(c, genre)
 
-genreBox.grid(row=1, column=1, padx=10, pady=10)
+genreBox.grid(row=2, column=1, padx=10, pady=10)
 
 c = 0
 gameBox = Listbox(root, selectmode=SINGLE, relief=FLAT)
@@ -94,8 +99,22 @@ for game in games:
     c += 1
     gameBox.insert(c, game)
 
-gameBox.grid(row=1, column=2, padx=10, pady=10)
+gameBox.grid(row=2, column=2, padx=10, pady=10)
 
+recLabel = Label(text = "Select a platform, genre, and game", bg="gray", fg='white', font=("Arial", 20))
+recLabel.grid(row=3, column=0, pady=10)
+
+##########################################################################################
+def callback(event):
+    selection = event.widget.curselection()
+    if selection:
+        index = selection[0]
+        data = event.widget.get(index)
+        recLabel.configure(text=data)
+    else:
+        recLabel.configure(text="")
+
+platBox.bind("<<ListboxSelect>>", callback)
 
 # Execute tkinter
 root.mainloop()
