@@ -1,59 +1,62 @@
-# Import module
+##########################################################################################
+# Import Modules
 from tkinter import *
 import csv
 
+##########################################################################################
+# Database Parsing
 database = []
 with open('database.csv', newline='') as csvfile:
     reader = csv.reader(csvfile)
     c = 0
-    for row in reader:
+    for line in reader:
         c += 1
         if c == 1:
-            continue
-        thing = []
-        for col in row:
+            continue  # skip the csv headers
+        gameEntry = []
+        for col in line:
             item = col.split('|')
-            values = []
+            platValues = []
             for i in item:
-                values.append(i.strip())
-            thing.append(values)
-        database.append(thing)
+                platValues.append(i.strip())
+            gameEntry.append(platValues)
+        database.append(gameEntry)
 
-#print(database)
-#exit(-1)
-
+# create unique list of platforms
 platforms = []
 for item in database:
     for plat in item[0]:
         if plat not in platforms:
             platforms.append(plat)
-
 platforms.sort()
 
 genres = []
-
 games = []
 
 ##########################################################################################
 # GUI generation
 root = Tk()
-root.title("Video Game Input Recommender")
-root.geometry( "800x450" )
+root.title("Video Game Input Recommender - Evan Pollifrone")
+root.geometry("800x450")
 root.configure(background='gray')
-root.grid_rowconfigure(0, weight=1)
+root.grid_rowconfigure(2, weight=1)
 root.grid_columnconfigure(0, weight=1)
+root.grid_columnconfigure(1, weight=1)
+root.grid_columnconfigure(2, weight=1)
 
-titleLabel = Label(text = "Video Game Input Recommender", bg="gray", fg='white', font=("Arial", 25))
-titleLabel.grid(row=0, column=0, sticky="nsew", pady=10)
+titleLabel = Label(text="Video Game Input Recommender",
+                   bg="gray", fg='white', font=("Arial", 25))
+titleLabel.grid(row=0, column=0, columnspan=3,
+                sticky="nw", padx=10, pady=(10, 0))
 
-platLabel = Label(text = "Platform", bg="gray", fg='white', font=("Arial", 15))
-platLabel.grid(row=1, column=0, pady=10)
+platLabel = Label(text="Platform", bg="gray", fg='white', font=("Arial", 15))
+platLabel.grid(row=1, column=0, sticky="nsw", padx=(10, 0), pady=10)
 
-genreLabel = Label(text = "Genre", bg="gray", fg='white', font=("Arial", 15))
-genreLabel.grid(row=1, column=1, pady=10)
+genreLabel = Label(text="Genre", bg="gray", fg='white', font=("Arial", 15))
+genreLabel.grid(row=1, column=1, sticky="nsw", padx=(10, 0), pady=10)
 
-gameLabel = Label(text = "Game", bg="gray", fg='white', font=("Arial", 15))
-gameLabel.grid(row=1, column=2, pady=10)
+gameLabel = Label(text="Game", bg="gray", fg='white', font=("Arial", 15))
+gameLabel.grid(row=1, column=2, sticky="nsw", padx=10, pady=10)
 
 c = 0
 platBox = Listbox(root, selectmode=SINGLE, relief=FLAT)
@@ -73,7 +76,7 @@ for plat in platforms:
         plat = "Computer"
     platBox.insert(c, plat)
 
-platBox.grid(row=2, column=0, padx=10, pady=10)
+platBox.grid(row=2, column=0, sticky="nsew", padx=(10, 0))
 
 c = 0
 genreBox = Listbox(root, selectmode=SINGLE, relief=FLAT)
@@ -91,7 +94,7 @@ for genre in genres:
         genre = "Massively Multiplayer Online"
     genreBox.insert(c, genre)
 
-genreBox.grid(row=2, column=1, padx=10, pady=10)
+genreBox.grid(row=2, column=1, sticky="nsew", padx=(10, 0))
 
 c = 0
 gameBox = Listbox(root, selectmode=SINGLE, relief=FLAT)
@@ -99,16 +102,18 @@ for game in games:
     c += 1
     gameBox.insert(c, game)
 
-gameBox.grid(row=2, column=2, padx=10, pady=10)
+gameBox.grid(row=2, column=2, sticky="nsew", padx=10)
 
-recLabel = Label(text = "Select a platform, genre, and game", bg="gray", fg='white', font=("Arial", 20))
-recLabel.grid(row=3, column=0, pady=10)
+recLabel = Label(text="Select a platform, genre, and game",
+                 bg="gray", fg='white', font=("Arial", 20))
+recLabel.grid(row=3, column=0, columnspan=3, sticky="sw", padx=10, pady=10)
 
 ##########################################################################################
 # Logic Processor
 platSel = None
 genreSel = None
 gameSel = None
+
 def recommendation():
     if not platSel and not genreSel and not gameSel:
         pass
@@ -127,4 +132,5 @@ def platCallback(event):
 platBox.bind("<<ListboxSelect>>", platCallback)
 
 ##########################################################################################
+# Execution Loop
 root.mainloop()
