@@ -22,14 +22,10 @@ with open('database.csv', newline='') as csvfile:
             gameEntry.append(platValues)
         database.append(gameEntry)
 
+print(database)
+
 # create unique list of platforms
 platforms = []
-for item in database:
-    for plat in item[0]:
-        if plat not in platforms:
-            platforms.append(plat)
-platforms.sort()
-
 genres = []
 games = []
 
@@ -58,6 +54,12 @@ genreLabel.grid(row=1, column=1, sticky="nsw", padx=(10, 0), pady=10)
 gameLabel = Label(text="Game", bg="gray", fg='white', font=("Arial", 15))
 gameLabel.grid(row=1, column=2, sticky="nsw", padx=10, pady=10)
 
+for item in database:
+    for plat in item[0]:
+        if plat not in platforms:
+            platforms.append(plat)
+platforms.sort()
+
 c = 0
 platBox = Listbox(root, selectmode=SINGLE, relief=FLAT)
 for plat in platforms:
@@ -68,32 +70,17 @@ for plat in platforms:
         plat = "Playstation 4"
     if plat == "p5":
         plat = "Playstation 5"
-    if plat == "x1":
+    if plat == "xo":
         plat = "Xbox One"
-    if plat == "xx":
+    if plat == "xsx":
         plat = "Xbox Series X"
     if plat == "pc":
-        plat = "Computer"
+        plat = "Personal Computer"
     platBox.insert(c, plat)
 
 platBox.grid(row=2, column=0, sticky="nsew", padx=(10, 0))
 
-c = 0
 genreBox = Listbox(root, selectmode=SINGLE, relief=FLAT)
-for genre in genres:
-    c += 1
-    if genre == "fps":
-        genre = "First Person Shooter"
-    if genre == "racing":
-        genre = "Racing"
-    if genre == "sports":
-        genre = "Sports"
-    if genre == "rpg":
-        genre = "Role Playing Game"
-    if genre == "mmo":
-        genre = "Massively Multiplayer Online"
-    genreBox.insert(c, genre)
-
 genreBox.grid(row=2, column=1, sticky="nsew", padx=(10, 0))
 
 c = 0
@@ -126,10 +113,53 @@ def platCallback(event):
     selection = event.widget.curselection()
     if selection:
         index = selection[0]
-        data = event.widget.get(index)
-        recLabel.configure(text=data)
+        platSel = platforms[index]
+      #  recLabel.configure(text=platSel)
+
+        genres = []
+        genreBox.delete(0,'end')
+
+        games = []
+        gameBox.delete(0,'end')
+
+        for item in database:
+            if platSel in item[0]:
+                for genreItem in item[1]:
+                    if genreItem not in genres:
+                        genres.append(genreItem)
+        genres.sort()
+
+        c = 0
+        for genre in genres:
+            c += 1
+            if genre == "fps":
+                genre = "First Person Shooter"
+            if genre == "racing":
+                genre = "Racing"
+            if genre == "sports":
+                genre = "Sports"
+            if genre == "rpg":
+                genre = "Role Playing Game"
+            if genre == "mmo":
+                genre = "Massively Multiplayer Online"
+            genreBox.insert(c, genre)
+
 
 platBox.bind("<<ListboxSelect>>", platCallback)
+
+# On platform click
+    # Clear the game box
+    # Go through the data array
+        # Populate the Genre box if platfrom matches
+
+# On genre box click
+    # Go through the data array
+        # Populate if platform and genre match
+
+# On game box click
+    # Give recommendation
+
+# Clear selections
 
 ##########################################################################################
 # Execution Loop
