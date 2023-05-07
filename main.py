@@ -22,9 +22,7 @@ with open('database.csv', newline='') as csvfile:
             gameEntry.append(platValues)
         database.append(gameEntry)
 
-print(database)
-
-# create unique list of platforms
+# initialize backend arrays
 platforms = []
 genres = []
 games = []
@@ -63,7 +61,6 @@ platforms.sort()
 c = 0
 platBox = Listbox(root, selectmode=SINGLE, relief=FLAT)
 for plat in platforms:
-    c += 1
     if plat == "ns":
         plat = "Nintendo Switch"
     if plat == "p4":
@@ -77,18 +74,14 @@ for plat in platforms:
     if plat == "pc":
         plat = "Personal Computer"
     platBox.insert(c, plat)
+    c += 1
 
 platBox.grid(row=2, column=0, sticky="nsew", padx=(10, 0))
 
 genreBox = Listbox(root, selectmode=SINGLE, relief=FLAT)
 genreBox.grid(row=2, column=1, sticky="nsew", padx=(10, 0))
 
-c = 0
 gameBox = Listbox(root, selectmode=SINGLE, relief=FLAT)
-for game in games:
-    c += 1
-    gameBox.insert(c, game)
-
 gameBox.grid(row=2, column=2, sticky="nsew", padx=10)
 
 recLabel = Label(text="Select a platform, genre, and game",
@@ -102,24 +95,27 @@ genreSel = None
 gameSel = None
 
 def recommendation():
-    if not platSel and not genreSel and not gameSel:
-        pass
+    print(platSel)
+    print(genreSel)
+    print(gameSel)
+    if platSel and genreSel and gameSel:
+        recLabel.configure(text="Recommendation: Controller")
     else:
         recLabel.configure(text="Error: Missing Selection")
 
 ##########################################################################################
 # Events
 def platCallback(event):
+    global platSel
     selection = event.widget.curselection()
     if selection:
         index = selection[0]
         platSel = platforms[index]
-      #  recLabel.configure(text=platSel)
 
-        genres = []
+        genres.clear()
         genreBox.delete(0,'end')
 
-        games = []
+        games.clear()
         gameBox.delete(0,'end')
 
         for item in database:
@@ -143,20 +139,23 @@ def platCallback(event):
                 genre = "Massively Multiplayer Online"
             genreBox.insert(c, genre)
             c += 1
+
 platBox.bind("<<ListboxSelect>>", platCallback)
 
 def genreCallback(event):
+    global platSel
+    global genreSel
     selection = event.widget.curselection()
     if selection:
         index = selection[0]
         genreSel = genres[index]
 
-        games = []
+        games.clear()
         gameBox.delete(0,'end')
 
         for item in database:
-            if platSel in item[0] and genreSel in item:
-                games.append(item[2])
+            if platSel in item[0] and genreSel in item[1]:
+                games.append(item[2][0])
         games.sort()
 
         c = 0
@@ -164,14 +163,21 @@ def genreCallback(event):
             gameBox.insert(c, game)
             c += 1
 
-
 genreBox.bind("<<ListboxSelect>>", genreCallback)
 
+def gameCallback(event):
+    global platSel
+    global genreSel
+    global gameSel
 
-# On game box click
-    # Give recommendation
+    selection = event.widget.curselection()
+    if selection:
+        index = selection[0]
+        gameSel = games[index]
 
-# Clear selections
+        recommendation()
+
+gameBox.bind("<<ListboxSelect>>", gameCallback)
 
 ##########################################################################################
 # Execution Loop
