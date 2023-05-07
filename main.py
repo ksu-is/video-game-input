@@ -131,7 +131,6 @@ def platCallback(event):
 
         c = 0
         for genre in genres:
-            c += 1
             if genre == "fps":
                 genre = "First Person Shooter"
             if genre == "racing":
@@ -143,18 +142,31 @@ def platCallback(event):
             if genre == "mmo":
                 genre = "Massively Multiplayer Online"
             genreBox.insert(c, genre)
-
-
+            c += 1
 platBox.bind("<<ListboxSelect>>", platCallback)
 
-# On platform click
-    # Clear the game box
-    # Go through the data array
-        # Populate the Genre box if platfrom matches
+def genreCallback(event):
+    selection = event.widget.curselection()
+    if selection:
+        index = selection[0]
+        genreSel = genres[index]
 
-# On genre box click
-    # Go through the data array
-        # Populate if platform and genre match
+        games = []
+        gameBox.delete(0,'end')
+
+        for item in database:
+            if platSel in item[0] and genreSel in item:
+                games.append(item[2])
+        games.sort()
+
+        c = 0
+        for game in games:
+            gameBox.insert(c, game)
+            c += 1
+
+
+genreBox.bind("<<ListboxSelect>>", genreCallback)
+
 
 # On game box click
     # Give recommendation
