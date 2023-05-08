@@ -95,9 +95,6 @@ genreSel = None
 gameSel = None
 
 def recommendation():
-    print(platSel)
-    print(genreSel)
-    print(gameSel)
     if platSel and genreSel and gameSel:
         recLabel.configure(text="Recommendation: Controller")
     else:
